@@ -1,104 +1,52 @@
 # PROJECT: SCORCHED
 
-Fast-paced retro boomer shooter terinspirasi oleh **ULTRAKILL** dan classic **DOOM**. Mengusung gaya visual 2.5D retro pixel-art billboard sprites di dalam arena 3D low-poly bertema scorched inferno.
+Game FPS retro terinspirasi ULTRAKILL dan DOOM. Prototype saat ini berjalan di browser menggunakan Three.js sebelum di-port ke Godot Engine 4.
 
----
+## Cara Menjalankan
 
-## 🚀 Cara Menjalankan (Quick Start)
-
-### Opsi 1: Menjalankan via Local Web Server (Direkomendasikan)
-Gunakan Python bawaan untuk menjalankan server ringan di root direktori proyek:
+Jalankan web server lokal di folder proyek:
 
 ```bash
-# Jalankan server lokal
 python3 -m http.server 8080
 ```
-Buka browser dan akses:
-👉 **`http://localhost:8080`**
 
-### Opsi 2: Buka Langsung File HTML
-Buka file `index.html` langsung menggunakan browser modern (Chrome, Firefox, Zen, Edge):
-```bash
-# Contoh menggunakan browser langsung
-xdg-open index.html
-```
+Lalu buka browser di `http://localhost:8080`. Bisa juga langsung buka file `index.html` lewat browser.
 
----
+## Kontrol
 
-## 🎮 Kontrol Permainan
+- **WASD**: Jalan
+- **Mouse**: Arah bidik (klik layar untuk kunci kursor)
+- **Space**: Lompat
+- **Shift**: Dash (pakai 1 stamina)
+- **Klik Kiri**: Tembak
+- **Klik Kanan**: Pisau melee (nyerap darah: +20 HP, +1 stamina)
+- **E**: Push / Parry (tepis bola api musuh buat mantul balik)
+- **1, 2, 3**: Ganti senjata (1: Shotgun, 2: Revolver, 3: Cryo-Rifle)
 
-| Tombol | Aksi | Deskripsi |
-| :--- | :--- | :--- |
-| **W, A, S, D** | Gerak | Kecepatan lari tinggi |
-| **Mouse** | Arah Pandang | Putar kamera (Klik layar untuk Pointer Lock) |
-| **SPACE** | Lompat | Lompatan vertikal responsif |
-| **SHIFT** | Dash | Tele-dash cepat ke arah depan (konsumsi 1 stamina) |
-| **KLIK KIRI** | Tembak | Menembak dengan senjata aktif |
-| **KLIK KANAN** | Melee Knife | Serang jarak dekat & **Menghisap Darah (+20 HP, +1 Stamina)** |
-| **E** | Push / Parry | Mendorong musuh atau **Memantulkan Fireball musuh** |
-| **1, 2, 3** | Ganti Senjata | `1` Shotgun, `2` Revolver, `3` Cryo-Rifle |
+## Mekanik Utama
 
----
+- **Blood Absorption**: HP tidak regen otomatis. Cara utama isi darah adalah tusuk musuh dari jarak dekat pakai pisau (klik kanan).
+- **Parry**: Tekan E saat bola api musuh mendekat (<6.5 unit). Bola api akan berbalik warna jadi cyan dan memantul ke arah kursor dengan damage 100 (instant kill).
+- **Style Meter**: Nilai gaya bermain di pojok kanan bawah (Destructive sampai Ultrakill). Naik jika membunuh cepat, ganti senjata, dan parry.
 
-## ⚔️ Senjata & Mekanik Tempur
+## Musuh
 
-1. **[1] SHOTGUN**: Tembakan 7 pellet menyebar, damage mematikan pada jarak dekat.
-2. **[2] REVOLVER**: Proyektil berkecepatan tinggi, akurasi tajam untuk target jauh.
-3. **[3] CRYO-RIFLE**: Peluru berelemen es, penetrasi tinggi terhadap musuh api.
-4. **MELEE KNIFE (Blood Heal)**: Sumber utama regen HP. Menyerang musuh jarak dekat menyerap darah untuk memulihkan +20 HP & +1 Stamina.
-5. **PARRY MECHANIC (Tombol E)**: Menepis bola api musuh dalam jarak dekat akan memantulkan bola api tersebut kembali ke arah bidikan dengan kecepatan 90 unit/detik dan memberikan instant kill (100 damage).
-6. **STYLE METER**: Skor gaya bermain kombat (`DESTRUCTIVE` → `ANARCHY` → `BRUTAL` → `CHAOS` → `SSSLAYER` → `ULTRAKILL`).
+Ada 10 tipe monster api dari pack itch.io dengan behavior berbeda:
+- **Devil / Dragon / Elemental / Flower / Ghost / Magma**: Tipe ranged (menembakkan bola api).
+- **Golem / Hound / Lantern / Crab**: Tipe melee (mengejar dan kontak fisik).
 
----
+Detail stat tiap monster (HP multiplier, kecepatan, skala) ada di file `Docs/DOKUMENTASI.txt`.
 
-## 👾 Daftar Musuh (Fire Monsters)
+## Struktur File
 
-Game ini menghadirkan 10 variasi monster dengan perilaku dan pola serang berbeda:
+- `index.html`: File utama game (logika player, Three.js loop, HUD, Web Audio synth).
+- `monsters_data.js`: Data base64 spritesheet 10 monster (supaya aman dari error CORS browser).
+- `assets/monsters/`: Spritesheet PNG bersih (256x64 px) untuk bahan SpriteFrames Godot.
+- `assets/fire_monsters/`: Asset mentah dari itch.io.
+- `Docs/DOKUMENTASI.txt`: Dokumentasi teknis lengkap gameplay, behavior musuh, dan rencana scene Godot.
+- `scripts/` & `project.godot`: Konfigurasi Godot untuk tahap porting berikutnya.
 
-- **Devil**: Monster perapal proyektil bola api jarak menengah.
-- **Golem**: Monster tank lava bertubuh besar dengan serangan melee kontak.
-- **Hound**: Musuh pelari cepat yang mengejar pemain secara agresif.
-- **Dragon**: Mini-boss berukuran besar dengan HP tebal dan proyektil beruntun.
-- **Elemental**: Musuh lincah dengan manuver serangan tak terduga.
-- **Flower**: Turret api stasioner yang menembakkan proyektil berkala.
-- **Ghost**: Entitas melayang yang mengejar sambil menembak.
-- **Lantern**: Musuh patroli cepat penabrak melee.
-- **Magma**: Slime lava kecil penembak proyektil.
-- **Crab**: Monster bercangkang keras tahan serangan ringan.
+## Kredit Asset
 
----
-
-## 📁 Struktur Direktori Proyek
-
-```text
-.
-├── index.html                  # Main entry point game (HTML5, Three.js, UI, Audio)
-├── monsters_data.js            # Database Base64 spritesheet 10 monster (CORS-safe)
-├── README.md                   # Panduan cepat proyek
-├── Docs/
-│   └── DOKUMENTASI.txt         # Dokumentasi teknis & arsitektur lengkap
-├── assets/
-│   ├── monsters/               # Spritesheet 4-frame PNG hasil ekstraksi
-│   └── fire_monsters/          # Arsip mentah asset pack dari itch.io
-├── scripts/                    # Script GDScript (Persiapan porting Godot)
-└── project.godot               # Konfigurasi project Godot
-```
-
----
-
-## 🗺️ Roadmap Pengembangan
-
-- [x] Prototype WebGL/Three.js playable di browser.
-- [x] Sistem UI / HUD bergaya retro ULTRAKILL (Health, Stamina, Style Meter, Wave Indicator).
-- [x] Integrasi 10 monster animated billboard pixel-art dari itch.io.
-- [x] Sistem audio synthesizer procedural Web Audio API (tanpa file audio eksternal).
-- [ ] Porting arsitektur gameplay ke **Godot Engine 4.x** (3D Environment + `AnimatedSprite3D`).
-- [ ] Penambahan sound effects WAV/OGG retro berkualitas tinggi dan BGM synth-metal.
-- [ ] Desain level multi-room dengan arena trap dan boss fight.
-
----
-
-## 📜 Credits & Attribution
-
-- **Monster Assets**: ["16 Fire Monsters Animated Pixel Art Creature Pack"](https://sassion.itch.io/16-fire-monsters-animated-pixel-art-creature-pack) oleh **sassion** via itch.io.
-- **Engine Framework**: [Three.js](https://threejs.org/) (r128).
+- Monster sprites: [16 Fire Monsters Animated Pixel Art Creature Pack](https://sassion.itch.io/16-fire-monsters-animated-pixel-art-creature-pack) oleh sassion (itch.io).
+- Framework 3D web: Three.js r128 via CDN.
