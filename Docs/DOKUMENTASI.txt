@@ -1,7 +1,7 @@
 ================================================================================
 PROJECT: SCORCHED - GAME DESIGN & TECHNICAL DOCUMENTATION
 ================================================================================
-Platform Target: Godot Engine 4.x (Port dari WebGL/Three.js Prototype)
+Platform: Godot Engine 4.x (Native) & HTML5/Three.js (Web Prototype)
 Genre: Fast-Paced Retro FPS / Boomer Shooter (Inspirasi: ULTRAKILL, DOOM)
 Visual Style: 2.5D Retro Pixel Art Billboard Sprites dalam Lingkungan 3D Low-Poly
 Tema: Scorched Inferno / Hutan Terbakar Neraka
@@ -11,101 +11,73 @@ Tema: Scorched Inferno / Hutan Terbakar Neraka
 --------------------------------------------------------------------------------
 Struktur Folder Proyek:
 .
-├── index.html                  (Main game prototype HTML5/Three.js)
-├── monsters_data.js            (Database Base64 spritesheet 10 monster)
+├── index.html                  (Entry point versi Web HTML5/Three.js)
+├── monsters_data.js            (Database Base64 spritesheet 10 monster web)
+├── README.md                   # Panduan cepat proyek
 ├── Docs/
-│   └── DOKUMENTASI.txt         (Dokumen spesifikasi game & arsitektur)
+│   └── DOKUMENTASI.txt         # Dokumentasi teknis & arsitektur lengkap
 ├── assets/
-│   ├── monsters/               (Spritesheet 4-frame PNG hasil ekstrak)
-│   └── fire_monsters/          (Arsip mentah pack monster dari itch.io)
-├── scripts/                    (Script GDScript untuk persiapan Godot)
-└── project.godot               (Konfigurasi project Godot)
+│   ├── frames/                 # 10 Resource SpriteFrames (.tres) untuk Godot
+│   ├── monsters/               # Spritesheet 4-frame PNG (256x64 px)
+│   └── fire_monsters/          # Arsip mentah pack monster dari itch.io
+├── scenes/
+│   ├── main.tscn               # Scene utama arena, wave manager & menu GUI
+│   ├── player.tscn             # Scene player, kamera, audio & HUD
+│   ├── enemy.tscn              # Scene base musuh billboard AnimatedSprite3D
+│   ├── bullet.tscn             # Proyektil peluru pemain
+│   └── fireball.tscn           # Proyektil bola api musuh (parryable)
+├── scripts/
+│   ├── main.gd                 # Logika wave, menu state & HTTP score submission
+│   ├── player.gd               # Movement, weapons, knife heal, dash, parry
+│   ├── enemy.gd                # AI chase, attack ranged/melee, stats monster
+│   ├── bullet.gd               # Translasi peluru & hit detection
+│   ├── fireball.gd             # Translasi fireball & pantulan parry
+│   └── synth_audio.gd          # Prosedural SFX synthesizer AudioStreamWAV
+└── project.godot               # Konfigurasi project Godot 4 & Input Map
 
-Cara Menjalankan Game (Lokal):
-1. Jalankan web server di direktori root proyek:
+Cara Menjalankan:
+1. Versi Godot Engine 4 (Native):
+   godot            # Menjalankan langsung game
+   godot -e         # Membuka project di editor
+2. Versi Web (Browser):
    python3 -m http.server 8080
-2. Buka browser:
-   http://localhost:8080
-
-Rincian file dan fungsinya:
-
-A. index.html
-   Peran: Main Game File (Single Entry Point aplikasi).
-   Komponen didalamnya:
-   - UI / HUD Layer (HTML & CSS):
-     * #hud-left: Menampilkan angka HP (#hp-display), stamina bar (#stamina-display),
-       dan nama senjata aktif (#weapon-display).
-     * #hud-right: Menampilkan Style Rank (#style-rank), progress bar pengisi
-       style (#style-meter-bar), dan animasi teks poin style (#style-feed).
-     * #hud-top: Menampilkan indikator wave yang sedang berjalan (WAVE 1 / 3).
-     * #crosshair: Render bidikan tanda tambah (+) tepat di tengah layar.
-     * #damage-flash: Overlay transparan merah layar penuh yang berkedip saat
-       pemain menerima serangan.
-     * #menu, #gameover, #victory: Layar modal transisi state game (Start Game,
-       Kematian, dan Menang).
-   - Web Audio Synthesizer (JavaScript):
-     * playSound(type): Menggunakan Web Audio API natif (OscillatorNode &
-       GainNode) tanpa file audio eksternal. Menghasilkan SFX retro untuk
-       'shoot', 'knife', 'push', 'parry', 'heal', 'hurt', dan 'death'.
-   - Core Three.js Engine & Gameplay Logic:
-     * init(): Inisialisasi THREE.Scene, THREE.PerspectiveCamera, THREE.WebGLRenderer,
-       pencahayaan (AmbientLight & DirectionalLight), lantai dataran hangus (160x160),
-       dan 35 rintangan pilar batu/pohon hangus. Mendaftarkan input listener.
-     * initMonsterData(): Membaca dataset dari monsters_data.js. Melakukan kloning
-       tekstur sprite per instans dan konfigurasi material (alphaTest: 0.1,
-       depthWrite: false, fog: false) agar pixel art tidak tembus kabut.
-     * startGame() & resetGame(): Manajemen state loop permainan, aktivasi
-       Pointer Lock (kursor terkunci ke kanvas), dan reset variabel pemain/wave.
-     * spawnWave(): Menghitung dan melakukan instansiasi entitas musuh per wave
-       di sekeliling perimeter arena.
-     * shootWeapon() & createBullet(): Menangani mekanik 3 jenis senjata (Shotgun
-       pellet spread, Revolver akurasi tinggi, Cryo-Rifle peluru es).
-     * knifeAttack(): Menangani serangan melee pisau jarak dekat, verifikasi jarak
-       (<4.2 unit), damage ke musuh, dan regenerasi darah pemain (+20 HP & +1 Stamina).
-     * pushAction(): Menangani shockwave dorongan ke musuh dan mekanik parry
-       terhadap bola api musuh dalam jangkauan 6.5 unit.
-     * addStyle(): Menghitung skor style, update ranking (DESTRUCTIVE s/d ULTRAKILL),
-       dan memicu animasi feed teks style.
-     * takeDamage(): Mengurangi HP, memicu audio hurt & layar flash merah, serta
-       memicu state GameOver jika HP <= 0.
-     * checkVictory(): Mengecek sisa musuh; memicu wave berikutnya atau layar Victory.
-     * animate(): Main loop render (requestAnimationFrame) per frame untuk kalkulasi
-       regenerasi stamina, peluruhan style, pergerakan & gravitasi pemain, update
-       posisi peluru, update posisi fireball, navigasi AI musuh menuju pemain,
-       animasi siklus berjalan 4-frame sprite musuh, dan Three.js render draw call.
-
-B. monsters_data.js
-   Peran: Asset Data Container untuk Spritesheet Musuh.
-   Isi: Objek global window.MONSTER_DATA yang menampung 10 profil monster
-   (Devil, Golem, Hound, Dragon, Elemental, Flower, Ghost, Lantern, Magma, Crab).
-   Fungsi Teknis:
-   - Menyimpan gambar spritesheet 4-frame (256x64 px) dalam format Data URI
-     Base64 (data:image/png;base64,...).
-   - Menghilangkan dependensi loading file terpisah yang rentan diblokir
-     kebijakan CORS browser saat dijalankan via file:// atau server lokal.
-   - Menyimpan metadata runtime masing-masing monster: scale, speed, hpMult,
-     shoots (tipe serangan jarak jauh vs jarak dekat), dan frames.
-
-C. assets/monsters/
-   Peran: Direktori Spritesheet Bersih (PNG).
-   Isi: File hasil kompilasi frame (misal: devil_sheet.png, golem_sheet.png, dll)
-   dengan dimensi standar 256x64 px per karakter (4 frame berjalan @ 64x64 px).
-   Fungsi: Sumber asset bersih siap pakai untuk engine eksternal seperti Godot SpriteFrames.
-
-D. assets/fire_monsters/
-   Peran: Raw Asset Archive dari itch.io ("16 Fire Monster Set" by sassion).
-   Isi: Folder berisi potongan frame individual PNG (misal folder Devil/, Golem/,
-   Hound/) dan animasi GIF asli.
-   Fungsi: Arsip sumber referensi asset asli.
-
-E. File Legacy / Belum Aktif di HTML5 (Persiapan Godot):
-   - project.godot & scripts/*.gd: File script Godot lama
-     (player.gd, bullet.gd, fireball.gd, synth_audio.gd). Belum diintegrasikan
-     ke index.html, akan digunakan kembali saat porting ke engine Godot.
-   - assets/*.glb: Model 3D mesh (MawGooey, Slime) dari uji coba awal.
+   Buka browser di http://localhost:8080
 
 --------------------------------------------------------------------------------
-2. KARAKTER & ABILITY (PLAYER CONTROLLER)
+2. SISTEM ONLINE SCOREBOARD & USERNAME (INTEGRASI SERVER)
+--------------------------------------------------------------------------------
+Game terhubung dengan backend server HTTP REST API untuk leaderboard global.
+
+A. Spesifikasi Endpoint Server:
+   - URL: http://192.168.1.5:5000/api/scores
+   - Method: POST
+   - Headers: "Content-Type: application/json"
+   - Payload JSON:
+     {
+       "player": "CODENAME",
+       "style": 650.0,
+       "wave": 3
+     }
+   - Response: 201 Created {"status": "ok"}
+   - Leaderboard GET: Mengembalikan array top 10 skor tertinggi terurut desc.
+
+B. Alur Username & Menu Awal:
+   1. Layar Menu Awal (Start Menu):
+      - Game dimulai dalam kondisi paused-input (mouse mode VISIBLE).
+      - Menampilkan instruksi kontrol dan form input "ENTER CODENAME".
+   2. Penyimpanan Nama Persisten (Persistent Storage):
+      - Godot: Tersimpan di file konfigurasi lokal `user://player_data.cfg`.
+      - Web: Tersimpan di browser via `localStorage.getItem('scorched_player_name')`.
+      - Pemain tidak perlu mengetik ulang namanya setiap kali membuka game.
+   3. Trigger Pengiriman Skor:
+      - Skor terkirim otomatis saat pemain mati (Game Over) atau menang (Victory).
+      - Nilai yang dikirim: Nama pemain, akumulasi Style Points, dan Wave tercapai.
+   4. Auto-Cleanup HTTP Node:
+      - Pada Godot, node HTTPRequest di-instansiasi saat pengiriman dan otomatis
+        dihapus dari memory (`queue_free()`) setelah request selesai, mencegah memory leak.
+
+--------------------------------------------------------------------------------
+3. KARAKTER & ABILITY (PLAYER CONTROLLER)
 --------------------------------------------------------------------------------
 A. Status & Resource:
    - HP (Hit Points): Base 100. Regen utama BUKAN pasif, melainkan menyerap
@@ -119,41 +91,41 @@ A. Status & Resource:
 
 B. Pergerakan (Movement):
    - WASD / Analog: Gerak horizontal (kecepatan dasar tinggi: 13 unit/detik).
-   - Space: Jump (kecepatan lompat vertikal, gravitasi responsif).
+   - Space: Jump (kecepatan lompat vertikal: 11 unit/detik).
    - Shift (Dash): Konsumsi 1 bar stamina. Instan tele-dash ke arah pandangan
-     (10 unit forward thrust) untuk dodge serangan proyektil musuh.
+     (34 unit speed, durasi 0.14 detik) untuk dodge serangan proyektil musuh.
 
 C. Senjata & Serangan (Arsenal):
-   - Slot 1: SHOTGUN
+   - Slot 1: SHOTGUN (Tombol 1)
      * Karakteristik: Tembakan menyebar (7 pellet per tembakan), damage tinggi
-       jarak dekat (24 dmg/pellet).
+       jarak dekat (24 dmg/pellet). Cooldown 0.45s.
      * Style bonus: +4 STYLE ("SHOTGUN BLAST").
-   - Slot 2: REVOLVER
-     * Karakteristik: Hitscan/proyektil cepat presisi tinggi, 90 damage per tembakan.
+   - Slot 2: REVOLVER (Tombol 2)
+     * Karakteristik: Proyektil berkecepatan tinggi presisi tajam, 90 damage. Cooldown 0.4s.
      * Style bonus: +10 STYLE ("REVOLVER SHOT").
-   - Slot 3: CRYO-RIFLE
-     * Karakteristik: Proyektil elemen es penetrasi api, damage 25, counter elemen api.
+   - Slot 3: CRYO-RIFLE (Tombol 3)
+     * Karakteristik: Proyektil elemen es penetrasi api, 25 damage. Cooldown 0.18s.
      * Style bonus: +6 STYLE ("CRYO SHOT").
    - Klik Kanan: KNIFE (MELEE / BLOOD ABSORPTION)
      * Karakteristik: Serangan pisau jarak dekat (radius 4.2 unit), 65 damage.
      * Efek Khusus: Menyerap darah musuh -> Pulihkan +20 HP & +1 Stamina per hit.
      * Style bonus: +25 STYLE ("BLOOD ABSORPTION").
    - Tombol E: SHOCKWAVE & PARRY
-     * Konsumsi: 1 bar stamina.
-     * Efek 1 (Shockwave): Mendorong mundur musuh dalam radius 5.5 unit sejauh 8 unit.
+     * Konsumsi: 1 bar stamina. Cooldown 0.45s.
+     * Efek 1 (Shockwave): Mendorong mundur musuh dalam radius 6.5 unit sejauh 24 unit force.
      * Efek 2 (Parry): Jika memukul fireball musuh dalam radius 6.5 unit:
-       - Proyektil berubah warna (Cyan).
+       - Proyektil berubah warna (Cyan Neon).
        - Kecepatan berlipat ganda (90 unit/detik).
-       - Memantul balik tepat ke arah crosshair pemain.
+       - Memantul balik tepat ke arah crosshair kamera pemain.
        - Damage proyektil naik drastis (100 damage / Instant Kill).
-     * Style bonus: +45 STYLE ("PARRY REFLECT"), +50 STYLE ("PARRY KILL").
+     * Style bonus: +45 STYLE ("PARRY REFLECT").
 
 --------------------------------------------------------------------------------
-3. ENEMY BEHAVIOR & ARCHETYPE (10 FIRE MONSTERS)
+4. ENEMY BEHAVIOR & ARCHETYPE (10 FIRE MONSTERS)
 --------------------------------------------------------------------------------
 Sumber Asset: "16 Fire Monsters Animated Pixel Art Creature Pack" by sassion (itch.io)
 Tipe Rendering: Animated Billboard Sprite (Menghadap kamera secara otomatis)
-Animasi: 4-frame sprite sheet per karakter.
+Animasi: 4-frame sprite sheet per karakter (@ 64x64 px).
 
 A. Roster Musuh & Stat:
    1. Devil (Fire Devil)
@@ -198,80 +170,86 @@ A. Roster Musuh & Stat:
        - Behavior: Tahan peluru ringan, mengejar lurus untuk serangan capit melee.
 
 B. AI State Machine:
-   - State 1: SPAWN -> Muncul di perimeter arena (radius 16 - 32 unit).
+   - State 1: SPAWN -> Muncul di perimeter arena (radius 16 - 34 unit).
    - State 2: CHASE -> Hitung vektor arah menuju pemain (ignoring Y axis).
    - State 3: ATTACK:
      * Ranged (interval 2.6s): Spawn instance fireball dengan arah Player.Position.
-     * Melee (interval 1.6s, jarak < 2.5 unit): Panggil TakeDamage() pada pemain.
-   - State 4: HURT -> Flash warna putih singkat (80ms), menerima knockback jika dipukul.
-   - State 5: DIE -> Hapus collision/sprite, spawn sound efek death, tambah style point.
+     * Melee (interval 1.5s, jarak < 2.8 unit): Panggil take_damage() pada pemain.
+   - State 4: HURT -> Flash warna putih/oranye singkat (80ms), menerima knockback impuls.
+   - State 5: DIE -> Signal died di-emit, beri style point ke player, queue_free().
 
 --------------------------------------------------------------------------------
-4. PROYEKTIK & PARRY MECHANIC (FIREBALL)
+5. PROYEKTIK & PARRY MECHANIC (FIREBALL)
 --------------------------------------------------------------------------------
 - Default Fireball:
-  * Speed: 14 unit/detik.
+  * Speed: 24 unit/detik.
   * Lifetime: 5 detik.
-  * Radius deteksi kontak pemain: 1.3 unit.
+  * Collision Layer: Layer 4 (Fireball), Mask 1 (Player) & 2 (World).
   * Damage ke pemain: 22 HP + Layar Flash Merah.
 - Parried Fireball (Dipantulkan tombol E):
-  * isParried flag: True.
-  * Warna visual: Berubah dari Merah Api (0xff3300) ke Cyan Neon (0x00ffff).
+  * is_parried flag: True.
+  * Warna visual: Berubah dari Merah Api ke Cyan Listrik bercahaya.
   * Speed: Meningkat drastis ke 90 unit/detik.
-  * Arah: Ditentukan oleh kamera getWorldDirection().
-  * Damage ke musuh yang tertabrak: 100 damage (membunuh hampir semua musuh 1 hit).
+  * Arah: Ditentukan oleh vektor hadap kamera (-camera.global_transform.basis.z).
+  * Damage ke musuh: 100 damage (Instant kill pada monster non-boss).
 
 --------------------------------------------------------------------------------
-5. STAGE & LEVEL DESIGN (SCORCHED ARENA)
+6. STAGE & LEVEL DESIGN (SCORCHED ARENA)
 --------------------------------------------------------------------------------
 A. Lingkungan Visual:
-   - Skybox/Background: Gelap kemerahan pekat (Hex #140602).
-   - Fog: Exponential fog tebal (warna #1a0703, densitas 0.022) memberikan nuansa
-     neraka berasap dan isolasi arena.
+   - Background Mode: Solid Color gelap kemerahan pekat (#140602).
+   - Fog: Distance/Volumetric fog tebal (#1a0703, densitas 0.02) memberikan atmosfer
+     inferno berasap dan membatasi horizon.
    - Lighting: Ambient light oranye kemerahan (#ff5522) + Directional Sun api (#ffaa44).
-   - Floor: Lantai batu/tanah hangus 160x160 unit (#180904).
-   - Obstacle: 35 pilar kerucut batu hangus (burnt spires/trees) dengan tinggi bervariasi
-     (8 - 22 unit) sebagai cover pemain dari tembakan proyektil.
+   - Floor: StaticBody3D lantai batu hangus 160x160 unit (#180904).
+   - Obstacles: 25 pilar kerucut batu hangus (burnt spires) dengan variasi tinggi
+     (8 - 16 unit) sebagai cover pemain dari tembakan proyektil.
 
 B. Wave Progression:
    - Total Wave: 3 Gelombang survival.
-   - Wave 1: 6 musuh simultan. Musuh dasar (Devil, Golem, Hound).
-   - Wave 2: 12 musuh simultan. Variasi bertambah (Dragon, Elemental, Flower).
-   - Wave 3: 18 musuh simultan. Semua jenis monster muncul bersamaan.
+   - Wave 1: 6 musuh simultan. Musuh dasar (Devil, Golem, Hound, dll).
+   - Wave 2: 12 musuh simultan. Variasi monster meningkat.
+   - Wave 3: 18 musuh simultan. Semua variasi monster muncul bersamaan.
    - Victory Condition: Semua musuh di Wave 3 tereliminasi -> Muncul layar VICTORY.
    - Defeat Condition: HP pemain mencapai 0 -> Muncul layar YOU DIED + tombol restart.
 
 --------------------------------------------------------------------------------
-6. USER INTERFACE (HUD ULTRAKILL-STYLE)
+7. USER INTERFACE (HUD ULTRAKILL-STYLE)
 --------------------------------------------------------------------------------
 A. Kiri Bawah:
-   - Angka HP merah tebal (font monospace, ukuran 52px, glow merah).
-   - 3 bar cyan untuk Stamina (kosong = redup abu-abu).
+   - Angka HP merah tebal (font monospace, ukuran 46px, shadow hitam).
+   - 3 bar cyan untuk Stamina (modulate redup saat kosong).
    - Indikator Senjata Aktif: [1] SHOTGUN / [2] REVOLVER / [3] CRYO-RIFLE.
 B. Kanan Bawah:
    - Style Rank huruf kapital besar (DESTRUCTIVE, BRUTAL, ULTRAKILL, dll).
-   - Meter progress bar oranye bercahaya.
-   - Style Action Feed (animasi melayang ke atas: misal "+ BLOOD ABSORPTION",
-     "+ PARRY KILL!").
+   - Meter progress bar oranye pengisi style.
 C. Layar Tengah & Atas:
    - Teks WAVE X / 3 di posisi tengah atas (oranye terang ber-shadow hitam).
-   - Crosshair bentuk "+" cyan neon di tengah layar.
-   - Damage overlay (fullscreen flash merah transparan saat terkena hit).
+   - Crosshair bentuk "+" cyan neon tepat di tengah layar.
+   - Damage overlay (ColorRect layar penuh flash merah transparan saat terkena hit).
 
 --------------------------------------------------------------------------------
-7. PANDUAN STRUKTUR PORTING KE GODOT 4 (ROADMAP)
+8. IMPLEMENTASI GODOT 4 (ARSITEKTUR SCENE & NODE)
 --------------------------------------------------------------------------------
-Struktur Node Node Godot yang Disarankan:
-- res://scenes/
-  ├── Main.tscn               (Node3D: WorldEnvironment, DirectionalLight3D, Level Mesh)
-  ├── Player.tscn             (CharacterBody3D: Camera3D, Weapons, KnifeHitbox, AudioListener3D)
-  ├── EnemyBase.tscn          (CharacterBody3D: AnimatedSprite3D billboard, CollisionShape3D, Hitbox)
-  ├── Fireball.tscn           (Area3D: MeshInstance3D/GPUParticles3D, parry logic)
-  └── UI.tscn                 (CanvasLayer: Control, TextureProgressBar, RichTextLabel)
+Hierarki Node Terpasang:
+- res://scenes/main.tscn (Node3D, script: main.gd)
+  ├── WorldEnvironment (SubResource Environment kabut & ambient)
+  ├── DirectionalLight3D (Sunlight oranye dengan shadow)
+  ├── WaveTimer (Timer jeda antar gelombang)
+  ├── Arena (Node3D: Floor StaticBody3D + 25 Spire StaticBody3D)
+  ├── Player (Instance player.tscn)
+  └── MenuLayer (CanvasLayer GUI)
+      ├── StartPanel (Form input nama & tombol Start Mission)
+      ├── GameOverPanel (Layar You Died & tombol Try Again)
+      └── VictoryPanel (Layar Mission Complete & tombol Play Again)
 
-- res://scripts/
-  ├── player.gd               (Logika movement, dash, stamina, parry, dan shooting)
-  ├── enemy.gd                (State machine AI, navigasi arah player, serang)
-  ├── fireball.gd             (Translasi proyektil, handling pantulan parry)
-  └── game_manager.gd         (Sistem wave, scoring style, win/lose screen)
+- res://scenes/player.tscn (CharacterBody3D, script: player.gd)
+  ├── CollisionShape3D (Capsule)
+  ├── Camera3D (Y = 1.6)
+  ├── AudioShoot, AudioKnife, AudioPush, AudioHeal (AudioStreamPlayer)
+  └── HUD (CanvasLayer)
+
+- res://scenes/enemy.tscn (CharacterBody3D, script: enemy.gd)
+  ├── CollisionShape3D (Capsule)
+  └── AnimatedSprite3D (Y-Billboard, texture_filter Nearest, SpriteFrames res://assets/frames/*)
 ================================================================================

@@ -215,6 +215,10 @@
             • E : Push / Parry Fireball Musuh<br>
             • 1 / 2 / 3 : Ganti Senjata (Shotgun, Revolver, Cryo-Rifle)
         </div>
+        <div style="margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <label for="player-name-input" style="color: #ffaa00; font-size: 15px; font-weight: bold; letter-spacing: 2px;">ENTER CODENAME:</label>
+            <input id="player-name-input" type="text" maxlength="16" placeholder="V1_SLAYER" style="background: rgba(30, 10, 2, 0.95); border: 2px solid #ff5500; color: #00ffff; font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; padding: 8px 16px; text-align: center; outline: none; width: 220px; text-transform: uppercase;">
+        </div>
         <button class="btn" onclick="startGame()">START MISSION</button>
     </div>
 
@@ -346,6 +350,7 @@
 
         let scene, camera, renderer;
         let isStarted = false;
+        let playerName = "Player1";
         let hp = 100, maxHp = 100;
         let stamina = 3, maxStamina = 3, staminaTimer = 0;
         let stylePoints = 0, styleRank = "BRUTAL";
@@ -414,10 +419,37 @@
                 if (isStarted) renderer.domElement.requestPointerLock();
             });
 
+            // Restore saved codename
+            const savedName = localStorage.getItem('scorched_player_name');
+            const nameEl = document.getElementById('player-name-input');
+            if (savedName && nameEl) {
+                nameEl.value = savedName;
+            }
+
             animate();
         }
 
+        function submitScore(pName, finalStyle, finalWave) {
+            fetch('http://192.168.1.5:5000/api/scores', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    player: pName,
+                    style: Math.round(finalStyle * 10) / 10,
+                    wave: finalWave
+                })
+            }).catch(err => console.warn('Score submission failed:', err));
+        }
+
         function startGame() {
+            const nameEl = document.getElementById('player-name-input');
+            if (nameEl && nameEl.value.trim().length > 0) {
+                playerName = nameEl.value.trim().toUpperCase();
+            } else {
+                playerName = "Player1";
+            }
+            localStorage.setItem('scorched_player_name', playerName);
+
             document.getElementById('menu').style.display = 'none';
             renderer.domElement.requestPointerLock();
             isStarted = true;
@@ -675,6 +707,7 @@
                 isStarted = false;
                 document.exitPointerLock();
                 document.getElementById('gameover').style.display = 'flex';
+                submitScore(playerName, stylePoints, wave);
             }
         }
 
@@ -687,6 +720,7 @@
                     isStarted = false;
                     document.exitPointerLock();
                     document.getElementById('victory').style.display = 'flex';
+                    submitScore(playerName, stylePoints, wave);
                 }
             }
         }

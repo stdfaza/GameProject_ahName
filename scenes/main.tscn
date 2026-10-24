@@ -1,0 +1,721 @@
+[gd_scene load_steps=65 format=3 uid="uid://dmainscene01"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Floor"]
+albedo_color = Color(0.09, 0.04, 0.02, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_Spire"]
+albedo_color = Color(0.04, 0.015, 0.005, 1)
+roughness = 1.0
+
+[sub_resource type="BoxShape3D" id="Shape_Floor"]
+size = Vector3(160, 1, 160)
+
+[sub_resource type="BoxMesh" id="Mesh_Floor"]
+material = SubResource("Mat_Floor")
+size = Vector3(160, 1, 160)
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.08, 0.025, 0.01, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 0.35, 0.15, 1)
+ambient_light_energy = 0.8
+fog_enabled = true
+fog_light_color = Color(0.1, 0.03, 0.015, 1)
+fog_density = 0.02
+
+[sub_resource type="StyleBoxFlat" id="Style_Panel"]
+bg_color = Color(0.05, 0.02, 0.01, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.3, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="CylinderShape3D" id="SpireShape_0"]
+height = 13.1
+radius = 0.6
+
+[sub_resource type="CylinderMesh" id="SpireMesh_0"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.6
+height = 13.1
+[sub_resource type="CylinderShape3D" id="SpireShape_1"]
+height = 8.3
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_1"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 8.3
+[sub_resource type="CylinderShape3D" id="SpireShape_2"]
+height = 12.7
+radius = 1.1
+
+[sub_resource type="CylinderMesh" id="SpireMesh_2"]
+material = SubResource("Mat_Spire")
+top_radius = 0.7
+bottom_radius = 1.1
+height = 12.7
+[sub_resource type="CylinderShape3D" id="SpireShape_3"]
+height = 14.1
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_3"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 14.1
+[sub_resource type="CylinderShape3D" id="SpireShape_4"]
+height = 12.3
+radius = 1.2
+
+[sub_resource type="CylinderMesh" id="SpireMesh_4"]
+material = SubResource("Mat_Spire")
+top_radius = 0.7
+bottom_radius = 1.2
+height = 12.3
+[sub_resource type="CylinderShape3D" id="SpireShape_5"]
+height = 9.8
+radius = 0.8
+
+[sub_resource type="CylinderMesh" id="SpireMesh_5"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.8
+height = 9.8
+[sub_resource type="CylinderShape3D" id="SpireShape_6"]
+height = 10.9
+radius = 0.8
+
+[sub_resource type="CylinderMesh" id="SpireMesh_6"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.8
+height = 10.9
+[sub_resource type="CylinderShape3D" id="SpireShape_7"]
+height = 10.0
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="SpireMesh_7"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.9
+height = 10.0
+[sub_resource type="CylinderShape3D" id="SpireShape_8"]
+height = 8.3
+radius = 0.8
+
+[sub_resource type="CylinderMesh" id="SpireMesh_8"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.8
+height = 8.3
+[sub_resource type="CylinderShape3D" id="SpireShape_9"]
+height = 15.3
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="SpireMesh_9"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.9
+height = 15.3
+[sub_resource type="CylinderShape3D" id="SpireShape_10"]
+height = 11.2
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_10"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 11.2
+[sub_resource type="CylinderShape3D" id="SpireShape_11"]
+height = 9.3
+radius = 1.0
+
+[sub_resource type="CylinderMesh" id="SpireMesh_11"]
+material = SubResource("Mat_Spire")
+top_radius = 0.6
+bottom_radius = 1.0
+height = 9.3
+[sub_resource type="CylinderShape3D" id="SpireShape_12"]
+height = 8.9
+radius = 1.1
+
+[sub_resource type="CylinderMesh" id="SpireMesh_12"]
+material = SubResource("Mat_Spire")
+top_radius = 0.7
+bottom_radius = 1.1
+height = 8.9
+[sub_resource type="CylinderShape3D" id="SpireShape_13"]
+height = 8.0
+radius = 1.0
+
+[sub_resource type="CylinderMesh" id="SpireMesh_13"]
+material = SubResource("Mat_Spire")
+top_radius = 0.6
+bottom_radius = 1.0
+height = 8.0
+[sub_resource type="CylinderShape3D" id="SpireShape_14"]
+height = 10.4
+radius = 1.0
+
+[sub_resource type="CylinderMesh" id="SpireMesh_14"]
+material = SubResource("Mat_Spire")
+top_radius = 0.6
+bottom_radius = 1.0
+height = 10.4
+[sub_resource type="CylinderShape3D" id="SpireShape_15"]
+height = 11.9
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_15"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 11.9
+[sub_resource type="CylinderShape3D" id="SpireShape_16"]
+height = 15.6
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_16"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 15.6
+[sub_resource type="CylinderShape3D" id="SpireShape_17"]
+height = 9.3
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="SpireMesh_17"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.9
+height = 9.3
+[sub_resource type="CylinderShape3D" id="SpireShape_18"]
+height = 13.2
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="SpireMesh_18"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.9
+height = 13.2
+[sub_resource type="CylinderShape3D" id="SpireShape_19"]
+height = 9.8
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_19"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 9.8
+[sub_resource type="CylinderShape3D" id="SpireShape_20"]
+height = 8.6
+radius = 0.7
+
+[sub_resource type="CylinderMesh" id="SpireMesh_20"]
+material = SubResource("Mat_Spire")
+top_radius = 0.4
+bottom_radius = 0.7
+height = 8.6
+[sub_resource type="CylinderShape3D" id="SpireShape_21"]
+height = 11.8
+radius = 0.8
+
+[sub_resource type="CylinderMesh" id="SpireMesh_21"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.8
+height = 11.8
+[sub_resource type="CylinderShape3D" id="SpireShape_22"]
+height = 8.4
+radius = 1.0
+
+[sub_resource type="CylinderMesh" id="SpireMesh_22"]
+material = SubResource("Mat_Spire")
+top_radius = 0.6
+bottom_radius = 1.0
+height = 8.4
+[sub_resource type="CylinderShape3D" id="SpireShape_23"]
+height = 9.5
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="SpireMesh_23"]
+material = SubResource("Mat_Spire")
+top_radius = 0.5
+bottom_radius = 0.9
+height = 9.5
+[sub_resource type="CylinderShape3D" id="SpireShape_24"]
+height = 14.9
+radius = 0.9
+
+[sub_resource type="CylinderMesh" id="SpireMesh_24"]
+material = SubResource("Mat_Spire")
+top_radius = 0.6
+bottom_radius = 0.9
+height = 14.9
+
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WaveTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 20, 40, 20)
+light_color = Color(1, 0.65, 0.3, 1)
+light_energy = 1.5
+shadow_enabled = true
+
+[node name="Arena" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 1
+collision_mask = 7
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Arena/Floor"]
+shape = SubResource("Shape_Floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Arena/Floor"]
+mesh = SubResource("Mesh_Floor")
+
+[node name="Spire_0" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.7, 6.6, -19.0)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_0"]
+shape = SubResource("SpireShape_0")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_0"]
+mesh = SubResource("SpireMesh_0")
+
+[node name="Spire_1" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.5, 4.1, 17.3)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_1"]
+shape = SubResource("SpireShape_1")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_1"]
+mesh = SubResource("SpireMesh_1")
+
+[node name="Spire_2" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8, 6.4, -19.9)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_2"]
+shape = SubResource("SpireShape_2")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_2"]
+mesh = SubResource("SpireMesh_2")
+
+[node name="Spire_3" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.2, 7.1, -24.9)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_3"]
+shape = SubResource("SpireShape_3")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_3"]
+mesh = SubResource("SpireMesh_3")
+
+[node name="Spire_4" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.7, 6.1, -12.1)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_4"]
+shape = SubResource("SpireShape_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_4"]
+mesh = SubResource("SpireMesh_4")
+
+[node name="Spire_5" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3, 4.9, 20.1)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_5"]
+shape = SubResource("SpireShape_5")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_5"]
+mesh = SubResource("SpireMesh_5")
+
+[node name="Spire_6" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.3, 5.5, -18.9)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_6"]
+shape = SubResource("SpireShape_6")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_6"]
+mesh = SubResource("SpireMesh_6")
+
+[node name="Spire_7" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.2, 5.0, -22.0)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_7"]
+shape = SubResource("SpireShape_7")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_7"]
+mesh = SubResource("SpireMesh_7")
+
+[node name="Spire_8" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8, 4.1, 15.2)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_8"]
+shape = SubResource("SpireShape_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_8"]
+mesh = SubResource("SpireMesh_8")
+
+[node name="Spire_9" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 7.7, 25.4)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_9"]
+shape = SubResource("SpireShape_9")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_9"]
+mesh = SubResource("SpireMesh_9")
+
+[node name="Spire_10" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3, 5.6, -14.4)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_10"]
+shape = SubResource("SpireShape_10")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_10"]
+mesh = SubResource("SpireMesh_10")
+
+[node name="Spire_11" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.1, 4.6, -24.5)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_11"]
+shape = SubResource("SpireShape_11")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_11"]
+mesh = SubResource("SpireMesh_11")
+
+[node name="Spire_12" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.3, 4.5, 17.7)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_12"]
+shape = SubResource("SpireShape_12")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_12"]
+mesh = SubResource("SpireMesh_12")
+
+[node name="Spire_13" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32.2, 4.0, -44.7)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_13"]
+shape = SubResource("SpireShape_13")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_13"]
+mesh = SubResource("SpireMesh_13")
+
+[node name="Spire_14" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.7, 5.2, -17.7)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_14"]
+shape = SubResource("SpireShape_14")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_14"]
+mesh = SubResource("SpireMesh_14")
+
+[node name="Spire_15" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.2, 6.0, -45.3)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_15"]
+shape = SubResource("SpireShape_15")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_15"]
+mesh = SubResource("SpireMesh_15")
+
+[node name="Spire_16" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.6, 7.8, 21.3)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_16"]
+shape = SubResource("SpireShape_16")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_16"]
+mesh = SubResource("SpireMesh_16")
+
+[node name="Spire_17" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.1, 4.7, 48.8)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_17"]
+shape = SubResource("SpireShape_17")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_17"]
+mesh = SubResource("SpireMesh_17")
+
+[node name="Spire_18" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.1, 6.6, -16.8)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_18"]
+shape = SubResource("SpireShape_18")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_18"]
+mesh = SubResource("SpireMesh_18")
+
+[node name="Spire_19" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 4.9, -35.1)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_19"]
+shape = SubResource("SpireShape_19")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_19"]
+mesh = SubResource("SpireMesh_19")
+
+[node name="Spire_20" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.3, 4.3, 12.4)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_20"]
+shape = SubResource("SpireShape_20")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_20"]
+mesh = SubResource("SpireMesh_20")
+
+[node name="Spire_21" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.7, 5.9, 36.0)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_21"]
+shape = SubResource("SpireShape_21")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_21"]
+mesh = SubResource("SpireMesh_21")
+
+[node name="Spire_22" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.8, 4.2, -10.3)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_22"]
+shape = SubResource("SpireShape_22")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_22"]
+mesh = SubResource("SpireMesh_22")
+
+[node name="Spire_23" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.9, 4.8, -17.3)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_23"]
+shape = SubResource("SpireShape_23")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_23"]
+mesh = SubResource("SpireMesh_23")
+
+[node name="Spire_24" type="StaticBody3D" parent="Arena"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48.9, 7.4, -20.8)
+collision_layer = 1
+collision_mask = 7
+
+[node name="Collision" type="CollisionShape3D" parent="Arena/Spire_24"]
+shape = SubResource("SpireShape_24")
+
+[node name="Mesh" type="MeshInstance3D" parent="Arena/Spire_24"]
+mesh = SubResource("SpireMesh_24")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10)
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+
+[node name="StartPanel" type="PanelContainer" parent="MenuLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -180.0
+offset_right = 260.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_Panel")
+
+[node name="VBox" type="VBoxContainer" parent="MenuLayer/StartPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Title" type="Label" parent="MenuLayer/StartPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "PROJECT: SCORCHED"
+horizontal_alignment = 1
+
+[node name="Instructions" type="Label" parent="MenuLayer/StartPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+text = "WASD: Move | SPACE: Jump | SHIFT: Dash
+L-CLICK: Shoot | R-CLICK: Knife (Blood Heal) | E: Parry
+1 / 2 / 3: Switch Weapons"
+horizontal_alignment = 1
+
+[node name="NameLabel" type="Label" parent="MenuLayer/StartPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.65, 0, 1)
+theme_override_font_sizes/font_size = 15
+text = "ENTER CODENAME:"
+horizontal_alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="MenuLayer/StartPanel/VBox"]
+custom_minimum_size = Vector2(220, 38)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+placeholder_text = "V1_SLAYER"
+alignment = 1
+max_length = 16
+
+[node name="StartBtn" type="Button" parent="MenuLayer/StartPanel/VBox"]
+custom_minimum_size = Vector2(180, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "START MISSION"
+
+[node name="GameOverPanel" type="PanelContainer" parent="MenuLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -130.0
+offset_right = 220.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_Panel")
+
+[node name="VBox" type="VBoxContainer" parent="MenuLayer/GameOverPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="MenuLayer/GameOverPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.15, 0.15, 1)
+theme_override_font_sizes/font_size = 42
+text = "YOU DIED"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MenuLayer/GameOverPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.5, 1)
+theme_override_font_sizes/font_size = 16
+text = "The fire consumed your body."
+horizontal_alignment = 1
+
+[node name="RetryBtn" type="Button" parent="MenuLayer/GameOverPanel/VBox"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "TRY AGAIN"
+
+[node name="VictoryPanel" type="PanelContainer" parent="MenuLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -130.0
+offset_right = 240.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_Panel")
+
+[node name="VBox" type="VBoxContainer" parent="MenuLayer/VictoryPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="MenuLayer/VictoryPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0.65, 1)
+theme_override_font_sizes/font_size = 38
+text = "MISSION COMPLETE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MenuLayer/VictoryPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0.5, 1)
+theme_override_font_sizes/font_size = 16
+text = "All fire entities extinguished. Hell is silenced."
+horizontal_alignment = 1
+
+[node name="PlayAgainBtn" type="Button" parent="MenuLayer/VictoryPanel/VBox"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "PLAY AGAIN"
+
+[connection signal="pressed" from="MenuLayer/StartPanel/VBox/StartBtn" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MenuLayer/GameOverPanel/VBox/RetryBtn" to="." method="_on_retry_pressed"]
+[connection signal="pressed" from="MenuLayer/VictoryPanel/VBox/PlayAgainBtn" to="." method="_on_retry_pressed"]
